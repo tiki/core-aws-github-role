@@ -25,6 +25,19 @@ Conditions:
     - !Ref OIDCProviderArn
     - ""
 
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: core-aws-github-role
+    Description: Create a deployment role for a GitHub repo
+    Author: tiki
+    SpdxLicenseId: MIT
+    LicenseUrl: ../../LICENSE
+    ReadmeUrl: ../../README.md
+    Labels: ['github']
+    HomePageUrl: https://github.com/tiki/core-aws-github-role
+    SemanticVersion: 0.0.2
+    SourceCodeUrl: https://github.com/tiki/core-aws-github-role
+
 Resources:
   Role:
     Type: AWS::IAM::Role
