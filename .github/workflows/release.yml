@@ -34,7 +34,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: SAM Publish
-        run: sam build --no-cached && sam package --output-template-file packaged.yaml && sam publish --template packaged.yaml
+        run: sam build && sam package --output-template-file packaged.yaml && sam publish --template packaged.yaml
 
       - name: Get Version
         id: version
