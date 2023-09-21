@@ -37,12 +37,10 @@ jobs:
         run: sam build --no-cached && sam package --output-template-file packaged.yaml && sam publish --template packaged.yaml
 
       - name: Get Version
-        id: semver
-        uses: ietf-tools/semver-action@v1
-        with:
-          token: ${{ github.token }}
+        id: version
+        run: echo "current=$(awk '/SemanticVersion:/ {print $2}' template.yml)" >> $GITHUB_OUTPUT
 
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.semver.outputs.nextStrictt }}
+          tag: ${{ steps.version.outputs.current }}
