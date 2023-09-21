@@ -37,7 +37,7 @@ jobs:
 
       - name: Update SAR Version
         run: |
-          sed -i 's/SemanticVersion: .*/SemanticVersion: ${{ steps.semver.outputs.nextStrict }}/' template.yaml
+          sed -i 's/SemanticVersion: .*/SemanticVersion: ${{ steps.semver.outputs.nextStrict }}/' template.yml
 
       - name: Commit Changes
         continue-on-error: true
