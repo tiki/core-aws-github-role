@@ -9,9 +9,6 @@ Parameters:
   RepositoryName:
     Description: Name of GitHub repository (case sensitive).
     Type: String
-  OIDCProviderArn:
-    Description: Arn for the GitHub OIDC Provider.
-    Type: String
   OIDCAudience:
     Description: Audience supplied to configure-aws-credentials.
     Default: "sts.amazonaws.com"
@@ -19,11 +16,6 @@ Parameters:
   RoleName:
     Description: Name for the IAM Role.
     Type: String
-
-Conditions:
-  CreateOIDCProvider: !Equals
-    - !Ref OIDCProviderArn
-    - ""
 
 Metadata:
   AWS::ServerlessRepo::Application:
@@ -48,25 +40,12 @@ Resources:
           - Effect: Allow
             Action: sts:AssumeRoleWithWebIdentity
             Principal:
-              Federated: !If
-                - CreateOIDCProvider
-                - !Ref GithubOidc
-                - !Ref OIDCProviderArn
+              Federated: !Sub arn:aws:iam::${AWS::AccountId}:oidc-provider/token.actions.githubusercontent.com
             Condition:
               StringEquals:
                 token.actions.githubusercontent.com:aud: !Ref OIDCAudience
               StringLike:
                 token.actions.githubusercontent.com:sub: !Sub repo:${GitHubOrg}/${RepositoryName}:*
-
-  GithubOidc:
-    Type: AWS::IAM::OIDCProvider
-    Condition: CreateOIDCProvider
-    Properties:
-      Url: https://token.actions.githubusercontent.com
-      ClientIdList:
-        - sts.amazonaws.com
-      ThumbprintList:
-        - ffffffffffffffffffffffffffffffffffffffff
 
 Outputs:
   Arn:

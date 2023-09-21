@@ -33,8 +33,14 @@ jobs:
           role-session-name: ${{ env.SESSION_NAME }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: SAM Build
+        run: sam build
+
+      - name: SAM Package
+        run: sam package --output-template-file packaged.yaml
+
       - name: SAM Publish
-        run: sam build && sam package --output-template-file packaged.yaml && sam publish --template packaged.yaml
+        run: sam publish --template packaged.yaml
 
       - name: Get Version
         id: version
