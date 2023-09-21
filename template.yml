@@ -41,7 +41,6 @@ Resources:
             Action: sts:AssumeRoleWithWebIdentity
             Principal:
               Federated: !If
-                - CreateOIDCProvider
                 - !Ref GithubOidc
                 - !Sub arn:aws:iam::${AWS::AccountId}:oidc-provider/token.actions.githubusercontent.com
             Condition:
@@ -52,7 +51,6 @@ Resources:
 
   GithubOidc:
     Type: AWS::IAM::OIDCProvider
-    Condition: CreateOIDCProvider
     Properties:
       Url: https://token.actions.githubusercontent.com
       ClientIdList:
